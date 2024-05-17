@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zahra's Pool Game</title>
+<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Holtwood+One+SC" />
+<style>
+    body {
+        background-color: #93aff1;
+    }
+    object {
+        display: block;
+        margin: auto;
+    }
+    #lineLength {
+        text-align: center;
+    }
+    #cursorPos {
+        text-align: center;
+    }
+    input[type="text"] {
+        margin-right: 10px;
+    }
+    .textContainer { 
+        display: flex; 
+        align-items: center;
+        justify-content: center; 
+        flex-direction: row; 
+        margin-top: 20px; 
+    }
+    h1 {
+        margin-right: 10px;
+        text-align: center;
+    }
+    #svgContainer {
+        position: absolute;
+        top: 120%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    } 
+    h1 { font-family: "Holtwood One SC"; font-size: 50px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26.4px; color: aliceblue; } 
+    label {font-family: "Holtwood One SC"; font-size: 15px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 26.4px; color: aliceblue;}
+ 
+</style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+    <h1>Pool</h1><br>
+
+    <div class="textContainer">
+        
+        <label for="gameName">Game Name:</label>
+        <input type="text" id="gameName" name="gameName"><br><br>
+        <label for="player1">Player 1 Name:</label>
+        <input type="text" id="player1" name="player1"><br><br>
+        <span id="displayText"></span>
+        
+        <label for="player2">Player 2 Name:</label>
+        <input type="text" id="player2" name="player2"><br><br>
+        <span id="displayText2"></span>
+        <input id="shootButton" type="submit" value="Shoot!"> <br>
+        <input id="winnerButton" type="submit" value="Choose Winner!">
+
+    </div>
+    
+    <br><br>
+    <div id="lineLength">Line Length: 0</div>
+    <div id="cursorPos">Cursor Position: (0, 0)</div>
+
+    <svg id="svgContainer" width="700" height="1375" viewBox="-25 -25 1400 2750"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+    <rect width="1350" height="2700" x="0" y="0" fill="#C0D0C0" /> 
+    <rect width="1400" height="25" x="-25" y="-25" fill="darkgreen" />
+    <rect width="1400" height="25" x="-25" y="2700" fill="darkgreen" />
+    <rect width="25" height="2750" x="-25" y="-25" fill="darkgreen" />
+    <rect width="25" height="2750" x="1350" y="-25" fill="darkgreen" />
+    <circle cx="0" cy="0" r="114" fill="black" />
+    <circle cx="0" cy="2700" r="114" fill="black" />
+    <circle cx="0" cy="1350" r="114" fill="black" />
+    <circle cx="1350" cy="0" r="114" fill="black" />
+    <circle cx="1350" cy="1350" r="114" fill="black" />
+    <circle cx="1350" cy="2700" r="114" fill="black" />
+    <circle cx="675" cy="725" r="28" fill="YELLOW" />
+    <circle cx="640" cy="640" r="28" fill="BLUE" />
+    <circle cx="705" cy="665" r="28" fill="RED" />
+    <circle cx="600" cy="575" r="28" fill="PURPLE" />
+    <circle cx="676" cy="578" r="28" fill="BLACK" />
+    <circle cx="740" cy="574" r="28" fill="GREEN" />
+    <circle cx="550" cy="525" r="28" fill="BROWN" />
+    <circle cx="630" cy="512" r="28" fill="ORANGE" /> 
+    <circle cx="710" cy="499" r="28" fill="LIGHTYELLOW" />
+    <circle cx="800" cy="512" r="28" fill="LIGHTBLUE" />
+    <circle cx="500" cy="445" r="28" fill="PINK" />
+    <circle cx="590" cy="420" r="28" fill="MEDIUMPURPLE" />
+    <circle cx="675" cy="410" r="28" fill="LIGHTSALMON" />
+    <circle cx="775" cy="425" r="28" fill="LIGHTGREEN" />
+    <circle cx="845" cy="450" r="28" fill="SANDYBROWN" /> 
+    
+
+    <circle cx="676" cy="1400" r="28" fill="WHITE" />
+    </svg>
+    
+    <script>
+    var svgContainer = document.getElementById('svgContainer');
+
+    // Get the white ball element
+    var cueBall = svgContainer.querySelector('circle[fill="WHITE"]');
+
+    // Variables to track initial click position
+    var initialClickX = 0;
+    var initialClickY = 0;
+
+    // Variable to hold the line length
+    var lineLength = 0;
+
+    // Element to display line length
+    var lineLengthElement = document.getElementById('lineLength');
+    var cursorPosElement = document.getElementById('cursorPos');
+    var gameElement = document.getElementById("gameName");
+    var player1Element = document.getElementById("player1");
+    var player2Element = document.getElementById("player2");
+    var button = document.getElementById('shootButton');
+    var winButton = document.getElementById('winnerButton')
+    var displayText = document.getElementById('displayText');
+    var displayText2 = document.getElementById('displayText2');
+    var velocityX = 0;
+    var velocityY = 0;
+    var accX = 0;
+    var accY = 0;
+    var counter = 0;
+
+    var min = 1;
+    var max = 2
+    var random = 0; 
+    var turns = Math.floor(random * (max - min) + min); // 1 if player1 (blue), 2 if player2 (red)
+
+    var cursorPos;
+    // Function to calculate distance between two points
+    function calculateDistance(x1, y1, x2, y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+
+
+
+    // Function to draw line from cue ball to cursor
+    function drawLineToCursor(event) {
+        // Get the position of the cursor relative to the SVG container
+        var pt = svgContainer.createSVGPoint();
+        pt.x = event.clientX;
+        pt.y = event.clientY;
+        cursorPos = pt.matrixTransform(svgContainer.getScreenCTM().inverse());
+
+        // Calculate line length
+        lineLength = calculateDistance(parseFloat(cueBall.getAttribute("cx")), parseFloat(cueBall.getAttribute("cy")), cursorPos.x, cursorPos.y);
+        cursorPosElement.innerText = "Cursor Position: (" + Math.round(cursorPos.x) + ", " + Math.round(cursorPos.y) + ")";
+
+        // Update line length display
+        lineLengthElement.innerText = "Line Length: " + lineLength.toFixed(2);
+
+        // Clear previous line
+        var existingLine = document.getElementById('connectingLine');
+        if (existingLine) {
+            existingLine.remove();
+        }
+
+        // Create a new line
+        var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("id", "connectingLine");
+        line.setAttribute("x1", cueBall.getAttribute("cx"));
+        line.setAttribute("y1", cueBall.getAttribute("cy"));
+        line.setAttribute("x2", cursorPos.x);
+        line.setAttribute("y2", cursorPos.y);
+        if (turns === 1){
+            line.setAttribute("stroke", "blue");
+        }
+        else if (turns === 2) {
+            line.setAttribute("stroke", "red");
+        }
+
+        line.setAttribute("stroke-width", "6");
+        svgContainer.appendChild(line);
+    }
+
+    // Event listener for mouse down on cue ball
+    cueBall.addEventListener('mousedown', function(event) {
+        // Prevent default browser behavior
+        event.preventDefault();
+        // Record initial click position
+        initialClickX = event.clientX;
+        initialClickY = event.clientY;
+    });
+
+    // Event listener for mouse up
+    window.addEventListener('mouseup', function(event) {
+        // If mouse up happens on the cue ball, start drawing the line
+        if (event.target === cueBall) {
+            drawLineToCursor(event);
+        }
+        velocityX = cueBall.getAttribute("cx") - cursorPos.x;
+        velocityY = cueBall.getAttribute("cy") - cursorPos.y;
+
+        // Reset initial click position
+        initialClickX = 0;
+        initialClickY = 0;
+        var xTotal = velocityX * velocityX;
+        var yTotal = velocityY * velocityY;
+
+        var total = xTotal + yTotal;
+        var speed = Math.sqrt(total);
+
+        if (speed > 0.01){
+            accX = ((velocityX * -1.0) / speed) * 150.0
+            accY = ((velocityY * -1.0) / speed) * 150.0
+        }
+        var existingLine = document.getElementById('connectingLine');
+
+        if (existingLine) {
+            existingLine.remove();
+            if(turns === 1) {
+                turns = 2;
+            }
+            else if (turns === 2) {
+                turns = 1;
+            }
+        }
+    });
+
+    // Add event listener to the button
+    button.addEventListener('click', function() {
+        //alert('Button clicked!');
+        var formData = new FormData();
+        counter += 1;
+
+        formData.append('velocityX', velocityX.toFixed(2));
+        formData.append('velocityY', velocityY.toFixed(2));
+        formData.append('gameName',  gameElement.value);
+        formData.append('player1Name',  player1Element.value);
+        formData.append('player2Name',  player2Element.value);
+        formData.append('counter', counter.toFixed(2));
+
+        // Make a POST request to the server
+        $.ajax({
+            url: 'http://localhost:56753/display.html',
+            method: 'POST',
+            processData: false,
+            contentType: false,
+            data: formData,
+            success: function(response) {
+            // Redirect to another HTML file
+                window.location.href = 'display.html';
+            }
+        });
+    });
+
+    // Add event listener to the button
+    winButton.addEventListener('click', function() {
+        //alert('Button clicked!');
+        var formData = new FormData();
+        counter = -1;
+
+        formData.append('velocityX', velocityX.toFixed(2)* 10);
+        formData.append('velocityY', velocityY.toFixed(2) * 10);
+        formData.append('gameName',  gameElement.value);
+        formData.append('player1Name',  player1Element.value);
+        formData.append('player2Name',  player2Element.value);
+        formData.append('counter', counter.toFixed(2));
+
+        // Make a POST request to the server
+        $.ajax({
+            url: 'http://localhost:56753/display.html',
+            method: 'POST',
+            processData: false,
+            contentType: false,
+            data: formData,
+            success: function(response) {
+            // Redirect to another HTML file
+                window.location.href = 'display.html';
+            }
+        });
+    });
+
+    // Event listener for mouse movement on SVG container
+    window.addEventListener('mousemove', function(event) {
+        // If the mouse button is down and initial click is on cue ball, continue drawing the line
+        if (event.buttons === 1 && initialClickX !== 0 && initialClickY !== 0) {
+            drawLineToCursor(event);
+        }
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Shot Animation</title>
+<style>img {max-width: 20%;height: auto;}</style>
+</head><body><button onclick="startAnimation()">Start Animation!</button>
+<button onclick="stopAnimation()">Stop Animation!</button>
+<div id="imageContainer">
+
+</div><a href="/webpage.html">Continue Playing</a><script>
+var images = [
+'table-0.svg', 'table-1.svg', 'table-2.svg', 'table-3.svg', 'table-4.svg', 'table-5.svg', 'table-6.svg', 'table-7.svg', 'table-8.svg', 'table-9.svg', 'table-10.svg', 'table-11.svg', 'table-12.svg', 'table-13.svg', 'table-14.svg', 'table-15.svg', 'table-16.svg', 'table-17.svg', 'table-18.svg', 'table-19.svg', 'table-20.svg', 'table-21.svg', 'table-22.svg', 'table-23.svg', 'table-24.svg', 'table-25.svg', 'table-26.svg', 'table-27.svg', 'table-28.svg', 'table-29.svg', 'table-30.svg', 'table-31.svg', 'table-32.svg', 'table-33.svg', 'table-34.svg', 'table-35.svg', 'table-36.svg', 'table-37.svg', 'table-38.svg', 'table-39.svg', 'table-40.svg', 'table-41.svg', 'table-42.svg', 'table-43.svg', 'table-44.svg', 'table-45.svg', 'table-46.svg', 'table-47.svg', 'table-48.svg', 'table-49.svg', 'table-50.svg', 'table-51.svg', 'table-52.svg', 'table-53.svg', 'table-54.svg', 'table-55.svg', 'table-56.svg', 'table-57.svg', 'table-58.svg', 'table-59.svg', 'table-60.svg', 'table-61.svg', 'table-62.svg', 'table-63.svg', 'table-64.svg', 'table-65.svg', 'table-66.svg', 'table-67.svg', 'table-68.svg', 'table-69.svg', 'table-70.svg', 'table-71.svg', 'table-72.svg', 'table-73.svg', 'table-74.svg', 'table-75.svg', 'table-76.svg', 'table-77.svg', 'table-78.svg', 'table-79.svg', 'table-80.svg', 'table-81.svg', 'table-82.svg', 'table-83.svg', 'table-84.svg', 'table-85.svg', 'table-86.svg', 'table-87.svg', 'table-88.svg', 'table-89.svg', 'table-90.svg', 'table-91.svg', 'table-92.svg', 'table-93.svg', 'table-94.svg', 'table-95.svg', 'table-96.svg', 'table-97.svg', 'table-98.svg', 'table-99.svg', 'table-100.svg', 'table-101.svg', 'table-102.svg', 'table-103.svg', 'table-104.svg', 'table-105.svg', 'table-106.svg', 'table-107.svg', 'table-108.svg', 'table-109.svg', 'table-110.svg', 'table-111.svg', 'table-112.svg', 'table-113.svg', 'table-114.svg', 'table-115.svg', 'table-116.svg', 'table-117.svg', 'table-118.svg', 'table-119.svg', 'table-120.svg', 'table-121.svg', 'table-122.svg', 'table-123.svg', 'table-124.svg', 'table-125.svg', 'table-126.svg', 'table-127.svg', 'table-128.svg', 'table-129.svg', 'table-130.svg', 'table-131.svg', 'table-132.svg', 'table-133.svg', 'table-134.svg', 'table-135.svg', 'table-136.svg', 'table-137.svg', 'table-138.svg', 'table-139.svg', 'table-140.svg', 'table-141.svg', 'table-142.svg', 'table-143.svg', 'table-144.svg', 'table-145.svg', 'table-146.svg', 'table-147.svg', 'table-148.svg', 'table-149.svg', 'table-150.svg', 'table-151.svg', 'table-152.svg', 'table-153.svg', 'table-154.svg', 'table-155.svg', 'table-156.svg', 'table-157.svg', 'table-158.svg', 'table-159.svg', 'table-160.svg', 'table-161.svg', 'table-162.svg', 'table-163.svg', 'table-164.svg', 'table-165.svg', 'table-166.svg', 'table-167.svg', 'table-168.svg', 'table-169.svg', 'table-170.svg', 'table-171.svg', 'table-172.svg', 'table-173.svg', 'table-174.svg', 'table-175.svg', 'table-176.svg', 'table-177.svg', 'table-178.svg', 'table-179.svg', 'table-180.svg', 'table-181.svg', 'table-182.svg', 'table-183.svg', 'table-184.svg', 'table-185.svg', 'table-186.svg', 'table-187.svg', 'table-188.svg', 'table-189.svg', 'table-190.svg', 'table-191.svg', 'table-192.svg', 'table-193.svg', 'table-194.svg', 'table-195.svg', 'table-196.svg', 'table-197.svg', 'table-198.svg', 'table-199.svg', 'table-200.svg', 'table-201.svg', 'table-202.svg', 'table-203.svg', 'table-204.svg', 'table-205.svg', 'table-206.svg', 'table-207.svg', 'table-208.svg', 'table-209.svg', 'table-210.svg', 'table-211.svg', 'table-212.svg', 'table-213.svg', 'table-214.svg', 'table-215.svg', 'table-216.svg', 'table-217.svg', 'table-218.svg', 'table-219.svg', 'table-220.svg', 'table-221.svg', 'table-222.svg', 'table-223.svg', 'table-224.svg', 'table-225.svg', 'table-226.svg', 'table-227.svg', 'table-228.svg', 'table-229.svg', 'table-230.svg', 'table-231.svg', 'table-232.svg', 'table-233.svg', 'table-234.svg', 'table-235.svg', 'table-236.svg', 'table-237.svg', 'table-238.svg', 'table-239.svg', 'table-240.svg', 'table-241.svg', 'table-242.svg', 'table-243.svg', 'table-244.svg', 'table-245.svg', 'table-246.svg', 'table-247.svg', 'table-248.svg', 'table-249.svg', 'table-250.svg', 'table-251.svg', 'table-252.svg', 'table-253.svg', 'table-254.svg', 'table-255.svg', 'table-256.svg', 'table-257.svg', 'table-258.svg', 'table-259.svg', 'table-260.svg', 'table-261.svg', 'table-262.svg', 'table-263.svg', 'table-264.svg', 'table-265.svg', 'table-266.svg', 'table-267.svg', 'table-268.svg', 'table-269.svg', 'table-270.svg', 'table-271.svg', 'table-272.svg', 'table-273.svg', 'table-274.svg', 'table-275.svg', 'table-276.svg', 'table-277.svg', 'table-278.svg', 'table-279.svg', 'table-280.svg', 'table-281.svg', 'table-282.svg', 'table-283.svg', 'table-284.svg', 'table-285.svg', 'table-286.svg', 'table-287.svg', 'table-288.svg', 'table-289.svg', 'table-290.svg', 'table-291.svg', 'table-292.svg', 'table-293.svg', 'table-294.svg', 'table-295.svg', 'table-296.svg', 'table-297.svg', 'table-298.svg', 'table-299.svg', 'table-300.svg', 'table-301.svg', 'table-302.svg', 'table-303.svg', 'table-304.svg', 'table-305.svg', 'table-306.svg', 'table-307.svg', 'table-308.svg', 'table-309.svg', 'table-310.svg', 'table-311.svg', 'table-312.svg', 'table-313.svg', 'table-314.svg', 'table-315.svg', 'table-316.svg', 'table-317.svg', 'table-318.svg', 'table-319.svg', 'table-320.svg', 'table-321.svg', 'table-322.svg', 'table-323.svg', 'table-324.svg', 'table-325.svg', 'table-326.svg', 'table-327.svg', 'table-328.svg', 'table-329.svg', 'table-330.svg', 'table-331.svg', 'table-332.svg', 'table-333.svg', 'table-334.svg', 'table-335.svg', 'table-336.svg', 'table-337.svg', 'table-338.svg', 'table-339.svg', 'table-340.svg', 'table-341.svg', 'table-342.svg', 'table-343.svg', 'table-344.svg', 'table-345.svg', 'table-346.svg', 'table-347.svg', 'table-348.svg', 'table-349.svg', 'table-350.svg', 'table-351.svg', 'table-352.svg', 'table-353.svg', 'table-354.svg', 'table-355.svg', 'table-356.svg', 'table-357.svg', 'table-358.svg', 'table-359.svg', 'table-360.svg', 'table-361.svg', 'table-362.svg', 'table-363.svg', 'table-364.svg', 'table-365.svg', 'table-366.svg', 'table-367.svg', 'table-368.svg', 'table-369.svg', 'table-370.svg', 'table-371.svg', 'table-372.svg', 'table-373.svg', 'table-374.svg', 'table-375.svg', 'table-376.svg', 'table-377.svg', 'table-378.svg', 'table-379.svg', 'table-380.svg', 'table-381.svg', 'table-382.svg', 'table-383.svg', 'table-384.svg', 'table-385.svg', 'table-386.svg', 'table-387.svg', 'table-388.svg', 'table-389.svg', 'table-390.svg', 'table-391.svg', 'table-392.svg', 'table-393.svg', 'table-394.svg', 'table-395.svg', 'table-396.svg', 'table-397.svg', 'table-398.svg', 'table-399.svg', 'table-400.svg', 'table-401.svg', 'table-402.svg', 'table-403.svg', 'table-404.svg', 'table-405.svg', 'table-406.svg', 'table-407.svg', 'table-408.svg', 'table-409.svg', 'table-410.svg', 'table-411.svg', 'table-412.svg'
+];
+ var currentIndex = 0;
+var intervalId;
+var loadedImages = [];
+function preloadImages() {
+for (var i = 0; i < images.length; i++) {
+var img = new Image();
+img.src = images[i];
+loadedImages.push(img);
+}
+}
+function startAnimation() {
+currentIndex = 0;
+showImage();
+intervalId = setInterval(nextImage, 20);
+}
+function stopAnimation() {
+clearInterval(intervalId); // Stop the animation
+}
+function nextImage() {
+currentIndex = (currentIndex + 1) % images.length; // Move to the next image, looping back to the beginning if necessary
+showImage();
+}
+function showImage() {
+var imageContainer = document.getElementById('imageContainer');
+imageContainer.innerHTML = ''; // Clear previous image(s)
+var img = loadedImages[currentIndex];
+imageContainer.appendChild(img)
+;}
+window.onload = preloadImages;
+</script>
+</body>
+</html>
